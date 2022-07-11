@@ -6,7 +6,7 @@ export type Order = {
     statusOfOrder:string
 }
 
-export class UserStore {
+export class OrderStore {
     async index(): Promise<Order[]> {
         try {
             const conn = await Client.connect();
@@ -19,11 +19,23 @@ export class UserStore {
         }
     }
 
-    async show(user_id:string): Promise<Order> {
+    async currentOrderByUser(user_id:string): Promise<Order> {
         try {
             const conn = await Client.connect();
             const sql = 'SELECT * FROM orders WHERE user_id=($1)';
             const result = await conn.query(sql,[user_id]);
+            conn.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot get order ${error}`);
+        }
+    }
+
+    async show(id:string): Promise<Order> {
+        try {
+            const conn = await Client.connect();
+            const sql = 'SELECT * FROM orders WHERE user_id=($1)';
+            const result = await conn.query(sql,[id]);
             conn.release();
             return result.rows[0];
         } catch (error) {

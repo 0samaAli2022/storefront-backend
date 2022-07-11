@@ -11,6 +11,8 @@ app.get('/', function (req: Request, res: Response) {
     res.send('Hello World!');
 });
 
+products_routes(app);
+
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`);
 });

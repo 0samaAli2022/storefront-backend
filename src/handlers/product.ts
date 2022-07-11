@@ -9,14 +9,14 @@ const index = async (_req: Request, res: Response) => {
 }
 
 const show = async (req: Request, res: Response) => {
-    const article = await store.show(req.params.id)
-    res.json(article)
+    const product = await store.show(req.body.id)
+    res.json(product)
  }
 
  const create = async (req: Request, res: Response) => {
     try {
         const product: Product = {
-            id: parseInt(req.params.id),
+            id: parseInt(req.body.id),
             name: req.body.name,
             price: parseInt(req.body.price),
             category: req.body.category
@@ -39,6 +39,7 @@ const products_routes = (app: express.Application) => {
     app.get('/products', index);
     app.get('/products/:id', show);
     app.post('/products', create);
+    app.delete('/products', destroy);
 }
 
 

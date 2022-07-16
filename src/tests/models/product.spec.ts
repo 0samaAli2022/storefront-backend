@@ -2,6 +2,7 @@ import exp from 'constants';
 import { checkServerIdentity } from 'tls';
 import { Product, ProductStore } from '../../models/product';
 import dotenv from 'dotenv'
+import { deleteAndRestartTable } from '../../helperFunctions/helperFunctions';
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ describe('Product Model', () => {
         await store.delete('1');
         const result = await store.index();
         expect(result).toEqual([]);
+        deleteAndRestartTable('products');
     })
 
 });

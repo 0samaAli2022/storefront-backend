@@ -51,7 +51,8 @@ const authenticate = async (req: Request, res: Response) => {
         res.status(401)
         res.json({ error })
     }
-  }
+}
+
 
 const users_routes = (app: express.Application) => {
     app.get('/users', verifyAuthToken, index);

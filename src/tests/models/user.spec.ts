@@ -1,13 +1,12 @@
 import { User, UserStore } from '../../models/user';
-import { OrderStore } from '../../models/order';
 import dotenv from 'dotenv'
+import { deleteAndRestartTable } from '../../helperFunctions/helperFunctions';
 
 dotenv.config();
 
 const store = new UserStore();
-const orderStore = new OrderStore();
 const user:User = {
-    id:2,
+    id:1,
     first_name:'Osama',
     last_name:'ali',
     password:'12345'
@@ -29,8 +28,6 @@ describe('User Model', () => {
     });
 
     it('index method should return list of users', async () => {
-        await orderStore.delete('1');
-        await store.delete('1');
         const result = await store.index();
         expect(result).toEqual([]);
     });
@@ -48,8 +45,8 @@ describe('User Model', () => {
         });
     });
 
-    it('show method should return user of id=2', async () => {
-        const result = await store.show('2');
+    it('show method should return user of id=1', async () => {
+        const result = await store.show('1');
         expect({
             id:result.id,
             first_name:result.first_name,
@@ -59,6 +56,7 @@ describe('User Model', () => {
             first_name:user.first_name,
             last_name:user.last_name
         });
+        deleteAndRestartTable('users');
     })
 
 });

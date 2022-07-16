@@ -1,6 +1,9 @@
 import exp from 'constants';
 import { checkServerIdentity } from 'tls';
 import { Product, ProductStore } from '../../models/product';
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 const store = new ProductStore();
 const prod:Product = {

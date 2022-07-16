@@ -1,4 +1,14 @@
-import Client from "../database";
+import Client from '../database';
+import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const {
+    SALT_ROUNDS,
+    BCRYPT_PASSWORD
+} = process.env;
+
 
 export type User = {
     id: number,
@@ -6,6 +16,8 @@ export type User = {
     last_name: string,
     password: string
 }
+
+
 
 export class UserStore {
     async index(): Promise<User[]> {
@@ -36,14 +48,42 @@ export class UserStore {
         try {
             const conn = await Client.connect();
             const sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *';
-            const result = await conn.query(sql, [u.first_name, u.last_name, u.password]);
-            const product = result.rows[0];
-            const sql1='DELETE FROM users; ALTER SEQUENCE users_id_seq RESTART 1;';
-            conn.query(sql1);
+
+            const hash = bcrypt.hashSync( u.password + BCRYPT_PASSWORD , parseInt((SALT_ROUNDS as unknown) as string));
+
+            const result = await conn.query(sql, [u.first_name, u.last_name, hash]);
+            const user = result.rows[0];
             conn.release();
-            return product;
+            return user;
         } catch (error) {
             throw new Error(`Cannot create user ${error}`);
         }
     }
+
+    async authenticate (first_name:string, password:string) : Promise<User | null> {
+        const conn = await Client.connect();
+        const sql = "SELECT password FROM users WHERE first_name=($1)";
+        const result = await conn.query(sql,[first_name]);
+
+        if(result.rows.length){
+            const user = result.rows[0];
+            if(bcrypt.compareSync(password+BCRYPT_PASSWORD, user.password )){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    async delete(id:string): Promise<User> {
+        try {
+            const conn = await Client.connect();
+            const sql = 'DELETE FROM users WHERE id=($1)';
+            const result = await conn.query(sql, [id]);
+            conn.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot delete product ${id} : ${error}`);
+        }
+    }
+
 }

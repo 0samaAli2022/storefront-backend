@@ -50,12 +50,34 @@ export class ProductStore{
             const conn = await Client.connect();
             const sql = 'DELETE FROM products WHERE id=($1)';
             const result = await conn.query(sql, [id]);
-            const sql1='ALTER SEQUENCE products_id_seq RESTART 1';
-            conn.query(sql1);
             conn.release();
             return result.rows[0];
         } catch (error) {
             throw new Error(`Cannot delete product ${id} : ${error}`);
+        }
+    }
+
+    async productByCategory(category:string):Promise<Product[]> {
+        try {
+            const conn = await Client.connect();
+            const sql = 'SELECT * from products where category=($1)'
+            const result = await conn.query(sql,[category]);
+            conn.release();
+            return result.rows;
+        } catch (error) {
+            throw new Error(`cannot get products by category ${error}`);
+        }
+    }
+
+    async top5Products():Promise<Product[]> {
+        try {
+            const conn = await Client.connect();
+            const sql = 'SELECT products.id,name,price,quantity as howManyTimesOrdered,category from products  INNER JOIN product_order ON products.id = product_order.product_id GROUP BY product_order.product_id,products.id, quantity ORDER BY SUM(quantity) DESC LIMIT 5 OFFSET 0'
+            const result = await conn.query(sql);
+            conn.release();
+            return result.rows;
+        } catch (error) {
+            throw new Error(`cannot get products by category ${error}`);
         }
     }
 }

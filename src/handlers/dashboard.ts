@@ -7,6 +7,9 @@ const dashboardRoutes = (app: express.Application) => {
     app.get('/users/:user_id/orders/:order_id', verifyAuthToken, productsInSpecificOrder)
     app.get('/users/:user_id/orders', verifyAuthToken, productsInOrders)
     app.post('/users/:user_id/orders/:order_id/products',verifyAuthToken ,addProduct);
+    app.get('/top5products', getTop5Orders)
+
+    
 }
 
 const dashboard = new DashboardQueries()
@@ -15,6 +18,12 @@ const productsInOrders = async (_req: Request, res: Response) => {
   const products = await dashboard.productsInOrders(_req.params.user_id);
   res.json(products);
 }
+
+const getTop5Orders = async (req: Request, res: Response) => {
+  const products = await dashboard.top5Products();
+  res.json(products);
+}
+
 
 const productsInSpecificOrder = async (_req: Request, res: Response) => {
     const products = await dashboard.productsInSpecificOrder(_req.params.user_id, _req.params.order_id);
@@ -34,5 +43,7 @@ const addProduct = async (_req: Request, res: Response) => {
     res.json(err)
   }
 }
+
+
 
 export default dashboardRoutes

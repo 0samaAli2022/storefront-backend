@@ -1,1 +1,1 @@
-CREATE TABLE orders (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id), statusOfOrder VARCHAR(10));
+CREATE TABLE orders (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id), statusoforder VARCHAR(10));

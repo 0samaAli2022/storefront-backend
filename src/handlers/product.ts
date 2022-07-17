@@ -42,23 +42,11 @@ const getProductsByCategory = async (req: Request, res: Response) => {
     res.json(products);
 }
 
-const getTop5Orders = async (req: Request, res: Response) => {
-    const products = await store.top5Products();
-    res.json(products);
-}
-
-const destroy = async (req: Request, res: Response) => {
-    const deleted = await store.delete(req.body.id)
-    res.json(deleted)
-}
-
 const products_routes = (app: express.Application) => {
     app.get('/products', index);
-    app.get('/products/top5products', getTop5Orders)
     app.get('/products/category/:category',getProductsByCategory)
     app.post('/products',verifyAuthToken, create);
     app.get('/products/:id', show);
-    app.delete('/products', destroy);
 }   
 
 export default products_routes;

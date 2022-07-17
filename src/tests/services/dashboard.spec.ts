@@ -49,6 +49,44 @@ describe('Dashboard Queries',() => {
         } catch (error) {
             throw new Error(`cannon add product id ${testProd.id} to orderd id ${testOrder.id} : ${error}`)   
         }
+    });
+
+    it('productsInOrders should return all products from user\'s orders', async () => {
+        const result = await store.productsInOrders('1');
+        expect(result).toEqual([{
+            name: 'cheese',
+            price: 20,
+            quantity: 3,
+            category: 'diary', 
+            order_id: 1
+        }])
+    })
+
+    it('productsInSpecificOrder should return all products from user\'s order id=1', async () => {
+        const result = await store.productsInSpecificOrder('1','1');
+        expect(result).toEqual([{
+            name: 'cheese',
+            price: 20,
+            quantity: 3,
+            category: 'diary', 
+            order_id: 1
+        }]);
+    })
+
+    it('top5Products method should return top 5 puplar products', async () => {
+        const result = await store.top5Products();
+        expect(result[0]).toEqual({
+            id: 1,
+            name: "cheese",
+            price: 20,
+            howmanytimesordered: 3,
+            category: "diary"
+        });
+
+        await deleteAndRestartTable('product_order');
+        await deleteAndRestartTable('orders');
+        await deleteAndRestartTable('users');
+        await deleteAndRestartTable('products');
     })
     
 });

@@ -56,9 +56,11 @@ describe('Order Model', () => {
     it('show method should return order of id=1', async () => {
         const result = await store.show('1');
         expect(result).toEqual(order);
-        deleteAndRestartTable('product_order');
-        deleteAndRestartTable('orders');
-        deleteAndRestartTable('users');
-        deleteAndRestartTable('products');
+
+
+        await deleteAndRestartTable('product_order');
+        await deleteAndRestartTable('orders');
+        await deleteAndRestartTable('users');
+        await deleteAndRestartTable('products');
     })
 });

@@ -27,10 +27,6 @@ describe('Product Model', () => {
         expect(store.show).toBeDefined();
     });
 
-    it('should have a delete method', () => {
-        expect(store.delete).toBeDefined();
-    });
-
     it('index method should return a list of products', async () => {
         const result = await store.index();
         expect(result).toEqual([]);
@@ -46,11 +42,9 @@ describe('Product Model', () => {
         expect(result).toEqual(prod);
     })
 
-    it('delete method should return empty array', async () => {
-        await store.delete('1');
-        const result = await store.index();
-        expect(result).toEqual([]);
-        deleteAndRestartTable('products');
+    it('productByCategory method should return product of category diary', async () => {
+        const result = await store.productByCategory('diary');
+        expect(result[0].category).toEqual('diary');
     })
 
 });

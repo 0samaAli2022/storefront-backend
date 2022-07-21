@@ -10,13 +10,25 @@ dotenv.config();
 const store = new UserStore();
 
 const index = async (_req: Request, res: Response) => {
-    const user = await store.index();
-    res.json(user);
+    try {
+        const user = await store.index();
+        res.json(user);
+    } catch (error) {
+        res.status(400)
+        res.json(error)
+    }
+    
 }
 
 const show = async (req: Request, res: Response) => {
-    const user = await store.show(req.params.id)
-    res.json(user)
+    try {
+        const user = await store.show(req.params.id)
+        res.json(user)
+    } catch (error) {
+        res.status(400)
+        res.json(error)
+    }
+    
  }
 
  const create = async (req: Request, res: Response) => {
@@ -56,8 +68,8 @@ const authenticate = async (req: Request, res: Response) => {
 
 const users_routes = (app: express.Application) => {
     app.get('/users', verifyAuthToken, index);
-    app.get('/users/login', authenticate);
-    app.post('/users/signup', create);
+    app.get('/users/login', authenticate); //login
+    app.post('/users/signup', create); //sign up
     app.get('/users/:id', verifyAuthToken, show);
 }
 

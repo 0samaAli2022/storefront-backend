@@ -9,13 +9,25 @@ dotenv.config();
 const store = new OrderStore();
 
 const index = async (_req: Request, res: Response) => {
-    const orders = await store.index();
-    res.json(orders);
+    try {
+        const orders = await store.index();
+        res.json(orders);
+    } catch (error) {
+        res.status(400)
+        res.json(error)
+    }
+    
 }
 
 const show = async (req: Request, res: Response) => {
-    const order = await store.show(req.body.id)
-    res.json(order)
+    try {
+        const order = await store.show(req.body.id)
+        res.json(order)
+    } catch (error) {
+        res.status(400)
+        res.json(error)
+    }
+    
  }
 
  const create = async (req: Request, res: Response) => {
@@ -34,9 +46,9 @@ const show = async (req: Request, res: Response) => {
 }
 
 const orders_routes = (app: express.Application) => {
-    app.get('/orders', index);
-    app.get('/orders/:id', show);
-    app.post('/orders', create);
+    app.get('/orders',verifyAuthToken, index);
+    app.get('/orders/:id',verifyAuthToken, show);
+    app.post('/orders',verifyAuthToken, create);
 }
 
 

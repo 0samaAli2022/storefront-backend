@@ -15,19 +15,37 @@ const dashboardRoutes = (app: express.Application) => {
 const dashboard = new DashboardQueries()
 
 const productsInOrders = async (_req: Request, res: Response) => {
-  const products = await dashboard.productsInOrders(_req.params.user_id);
-  res.json(products);
+  try {
+    const products = await dashboard.productsInOrders(_req.params.user_id);
+    res.json(products);
+  } catch (error) {
+    res.status(400)
+    res.json(error)
+  }
+  
 }
 
 const getTop5Orders = async (req: Request, res: Response) => {
-  const products = await dashboard.top5Products();
-  res.json(products);
+  try {
+    const products = await dashboard.top5Products();
+    res.json(products);
+  } catch (error) {
+    res.status(400)
+    res.json(error)
+  }
+  
 }
 
 
 const productsInSpecificOrder = async (_req: Request, res: Response) => {
+  try {
     const products = await dashboard.productsInSpecificOrder(_req.params.user_id, _req.params.order_id);
     res.json(products);
+  } catch (error) {
+    res.status(400)
+    res.json(error)
+  }
+    
 }
 
 const addProduct = async (_req: Request, res: Response) => {

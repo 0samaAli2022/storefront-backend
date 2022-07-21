@@ -61,9 +61,10 @@ export class UserStore {
     }
 
     async authenticate (first_name:string, password:string) : Promise<User | null> {
-        const conn = await Client.connect();
-        const sql = "SELECT password FROM users WHERE first_name=($1)";
-        const result = await conn.query(sql,[first_name]);
+        try {
+            const conn = await Client.connect();
+            const sql = "SELECT password FROM users WHERE first_name=($1)";
+            const result = await conn.query(sql,[first_name]);
 
         if(result.rows.length){
             const user = result.rows[0];
@@ -72,5 +73,8 @@ export class UserStore {
             }
         }
         return null;
+        } catch (error) {
+            throw new Error(`couldn\'t authinticate ${error}`)
+        }   
     }
 }

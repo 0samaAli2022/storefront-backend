@@ -26,7 +26,7 @@ const testProd:Product = {
 const order:Order = {
     id:1,
     user_id:1,
-    statusoforder:'Active'
+    statusoforder:'active'
 };
 
 describe('Order Model', () => {

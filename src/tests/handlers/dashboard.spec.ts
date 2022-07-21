@@ -33,7 +33,7 @@ const testProd:Product = {
 const testOrder:Order = {
     id:1,
     user_id:1,
-    statusoforder:'Active'
+    statusoforder:'active'
 };
 const request = supertest(app);
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMCwiZmlyc3RfbmFtZSI6Im1vaGFtbWVkIiwibGFzdF9uYW1lIjoiQWxpIiwicGFzc3dvcmQiOiIkMmIkMTAkMi9kVTNvLmdsREwuNmE1T1JJWXFQLlM3eThuaFd2UnNpVlNVUnhqRTMwV2ZyYTBTRmgxWVMifSwiaWF0IjoxNjU3ODk0NDQwfQ.X5MaXKf3gVFhraB-nXc3ISj5tOmtPoHV9t9s1BtZFJg'

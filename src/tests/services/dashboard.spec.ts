@@ -33,7 +33,7 @@ const testProd:Product = {
 const testOrder:Order = {
     id:1,
     user_id:1,
-    statusoforder:'Active'
+    statusoforder:'active'
 };
 
 describe('Dashboard Queries',() => {
